@@ -1,0 +1,79 @@
+.divcolors{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    bottom: 10px;
+    left: -7px;
+}
+
+.colors{
+
+    margin-left: 20px;
+    border-radius: 60%;
+    cursor: pointer;
+    text-decoration: none;
+    width: 20px;
+    height: 20px;
+    
+    
+}
+
+.color1{
+    background-color: pink;
+}
+
+.color2{
+    background-color: black;
+}
+
+.color3{
+    background-color: blueviolet;
+}
+
+.color4{
+    background-color: rgb(151, 148, 149);
+}
+
+#img-corpo{
+
+    position: relative;
+    left: 35%;
+    border-radius: 75px 75px;
+    width: 100px;
+    height: 100px;
+
+
+}
+
+
+#container-img{
+    
+    background-color: rgb(151, 148, 149);
+    height: 40vh;
+}
+
+.div-perfil{
+    border-radius: 15% 15%;
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
+     rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset,
+      rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px,
+       rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}
+
+.editcolorname{
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.p-container{
+    margin-top: 0;
+}
+
+
+
+@media (max-width: 767px)and (min-width:460px ){
+    #img-corpo{
+        left: 43%;
+    }
+}
