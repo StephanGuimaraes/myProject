@@ -1,23 +1,31 @@
-import React, { Component } from "react";
-import { Link } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import './MenuSuperior.css';
+import { createBrowserHistory } from 'history';
+import { setProfile } from "../../store/Reducers/CheckLogin";
+import {useDispatch} from 'react-redux';
 
 
 
-class MenuSuperior extends Component {
+function MenuSuperior(props){
 
-    constructor(props){
-        super(props);
-    }
+  const dispatch = useDispatch();
 
-    componentDidMount() {
-      this.props.mantercor();
   
-    }
-
-    
-    render(){
+  
+  function handleSair() {
+    const history = createBrowserHistory();
       
+      localStorage.clear();
+      history.push("/");
+      window.location.reload();
+  }
+   
+  useEffect(() => {
+     
+    props.mantercor();
+  }, []);
+   
   return (
     
     <div >
@@ -38,11 +46,12 @@ class MenuSuperior extends Component {
               
             </li>
           </ul>
+          <div onClick={handleSair} className="logoutTopo"><ion-icon name="log-out-outline"></ion-icon></div>
         </div>
       </nav>
     </div>
   );
-    }
+    
 }
 
 export default MenuSuperior;

@@ -2,19 +2,38 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './painellogin.css';
 import { useSelector, useDispatch } from "react-redux";
-import { setNome, setSenha, verificarLogin } from '../../store/Reducers/CheckLogin';
+import {setMensagem } from '../../store/Reducers/CheckLogin';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import {useEffect} from 'react';
+import {CheckLogin} from '../../store/Reducers/CheckLogin';
+import {useForm} from 'react-hook-form';
+
 
 
 
 
 export default function Login() {
 
-  const [mensagemfailedlogin, setMensagemFailedLogin] = useState('');
+  const {register, handleSubmit} = useForm();
 
-  function handleInputClick() {
-    setMensagemFailedLogin('');
+  const [emailbol, setemailbol] = useState(false);
+  const [emailfail, setemailfail] = useState('');
+  
+
+  function verificarlogin(data){
+    const email = data.email;
+    const password = data.password;
+    
+    dispatch(CheckLogin({email, password}));
+  }
+
+ 
+  function handleInputClick(action) {
+    action.preventDefault();
+    dispatch(setMensagem(null));
+    setemailfail('');
+    setemailbol(false);
   }
 
   const navigate = useNavigate();
@@ -22,48 +41,41 @@ export default function Login() {
 
   const dispatch = useDispatch();
 
-  const { nome, senha, isLoading, error,isLogado } = useSelector(state => state.Auth);
+  const { email, password, isLoading, error,isSuccess,mensagem } = useSelector(state => state.Auth);
 
   
-
-  const handleNomeChange = event => {
-    dispatch(setNome(event.target.value));
-  };
-
-  const handleSenhaChange = event => {
-    dispatch(setSenha(event.target.value));
-  };
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    dispatch(verificarLogin(nome, senha));
-    if (isLogado) {
+  useEffect(() => {
+    if (isSuccess) {
       navigate('/perfil-gerenciamento');
-    }else{
-      setMensagemFailedLogin('Login ou senha incorretos');
-    }
-    
-  };
 
+    }
+
+    if (mensagem) {
+      setemailbol(true);
+      setemailfail('Usuário não encontrado');
+    }
+  }, [mensagem, navigate]);
   
+
+
+
   return (
     <div className='boxlogin'>
       <div className='boxForm'>
         <span className='BorderLine'></span>
-        <form>
+        <form onSubmit={handleSubmit(verificarlogin)}>
           <h2>Login</h2>
 
           <div className='Inputboxlogin'>
             <p className='erronomelogin'></p>
             <input
               type="text"
-              required="required"
-              value={nome}
-              onChange={handleNomeChange}
+              {...register('email',{required:true})}
+              
               onClick={handleInputClick}
                             
             />
-            <span>UserName</span>
+            <span>Email</span>
             <i></i>
             
           </div>
@@ -71,9 +83,7 @@ export default function Login() {
             <p className='loginsenha'></p>
             <input
               type="password"
-              required="required"
-              value={senha}
-              onChange={handleSenhaChange}  
+              {...register('password',{required:true})}
               onClick={handleInputClick}               
             />
             <span>password</span>
@@ -89,10 +99,12 @@ export default function Login() {
 
             </div>
 
-            <button type="submit" className='butonlogin' disabled={isLoading} onClick={handleSubmit}>Login</button>
+            <button type="submit" className='butonlogin' disabled={isLoading}>Login</button>
             
 
-              <p className='Loginerrado'>{mensagemfailedlogin}</p>
+            {emailbol ? (
+            <p className='Loginerrado'>{emailfail}</p>
+            ):<p className='Loginerrado'></p>}
              {error && <div>{error}</div>}
             
 

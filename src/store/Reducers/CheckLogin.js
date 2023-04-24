@@ -1,17 +1,31 @@
-import { createSlice } from "@reduxjs/toolkit";
-import axios from 'axios';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import  ConexaoApi  from "../../services/registrosApi";
+
 
 
 
 
 const initialState =
 {
-    nome: '',
-    senha: '',
-    isLogado: false,
+    profile:null,
     isLoading: false,
-    error: null
-}
+    isSuccess:false,
+    error: false,
+    }
+
+
+export const CheckLogin = createAsyncThunk(
+    'login/verificausuario',
+    async(userdata, {rejectWithValue})=>{
+
+      try{
+        const response = await ConexaoApi.CheckLoginApi(userdata);
+        return response;
+      }catch(error){
+        return rejectWithValue(error.message);
+      }
+    }
+)
 
 
 const AuthSlice = createSlice({
@@ -20,46 +34,46 @@ const AuthSlice = createSlice({
     initialState,
     reducers: {
        
-        setNome(state, action) {
-          state.nome = action.payload;
+        setMensagem(state,action){
+          state.mensagem= action.payload;
+          console.log(action.payload)
         },
-        setSenha(state, action) {
-          state.senha = action.payload;
-        },
-        setLoading(state, action) {
-          state.isLoading = action.payload;
-        },
-        setError(state, action) {
-          state.error = action.payload;
-        },
-        setLogado(state, action) {
-          state.isLogado = action.payload;
-          state.nome = state.nome
+
+        setProfile(state,action){
+          state.profile = action.payload;
         }
+                
+
+      },
+      extraReducers: builder => {
+        builder
+          .addCase(CheckLogin.pending, (state) => {
+            state.isLoading = true;
+          })
+          .addCase(CheckLogin.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.mensagem = action.payload.message;
+            state.profile = action.payload.results;
+            
+          })
+          .addCase(CheckLogin.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = true;
+            state.mensagem = action.payload;
+          })
+          .addDefaultCase((state, action) => {
+            
+            return state;
+          });
       }
     });
 
-      
-   
+     
 
-
-export const { setNome, setSenha, setLoading, setError, setLogado } = AuthSlice.actions;
-
-export const verificarLogin = (nome, senha) => async dispatch => {
-    dispatch(setLoading(true));
-    
-  
-    try {
-      const response = await axios.post('http://localhost:5000/login', { nome, senha });
-      dispatch(setLogado(true));
-      dispatch(setLoading(false));
-      localStorage.setItem('nome', nome);
-    
-    } catch (error) {
-      dispatch(setError(error.message));
-      dispatch(setLoading(false));
-    }
-  };
+export const {setLoading, setError, setLogado,setMensagem,setProfile } = AuthSlice.actions;
 
 
 export default AuthSlice.reducer;
+
+  

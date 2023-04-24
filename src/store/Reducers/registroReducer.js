@@ -1,41 +1,86 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice  } from "@reduxjs/toolkit";
+import ConexaoApi from "../../services/registrosApi";
+
 
 
 const initialState={
     username:'',
+    salario:'',
     email:'',
     password:'',
+    nascimento:'',
     confirmpassword:'',
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    messageacerto: '',
+    messageerro:null,
+    
+    
 }
 
-const ValidPasswords = createAsyncThunk(
-    'checarsenhas',
-    
-)
 
-const RegistreSlice = createSlice({
-    name:"Register",
+export const checkUser  = createAsyncThunk(
+    'registro/checkuser',
+  async (userData, { rejectWithValue }) => {
+        
+    try {
+      
+      const response = await ConexaoApi.checkUserAPI(userData);
+      
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+)
+    
+
+
+const RegistroSlice = createSlice({
+    name:"Registro",
     initialState,
     reducers: {
 
-        setUsername(state,action){
-            state.username = action.payload;
-        },
-        setEmail(state,action){
-            state.email = action.payload;
-        },
-        setPassword(state,action){
-            state.password = action.payload;
-        },
-        setConfirmpw(state,action){
-            state.confirmpassword = action.payload;             
-        },
+       
+        setmessageerro(state,action){
 
-    }
+          state.messageerro = action.payload;
+
+    },
+
+    setisSuccess(state,action){
+
+          state.isSuccess = action.payload;
+        }
+  
+  
+  
+  },
+
+    extraReducers: builder => {
+        builder
+          .addCase(checkUser.pending, (state) => {
+            state.isLoading = true;
+          })
+          .addCase(checkUser.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.messageacerto = action.payload.message;
+            
+          })
+          .addCase(checkUser.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.messageerro = action.payload;
+                        
+          });
+      }
 
 })
 
 
-export const {setUsername, setEmail, setPassword, setConfirmpw} = RegistreSlice.actions;
 
-export default RegistreSlice.reducer;
+export const {setmessageerro,setisSuccess} = RegistroSlice.actions;
+
+export default RegistroSlice.reducer;

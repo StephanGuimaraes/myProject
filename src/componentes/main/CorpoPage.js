@@ -1,58 +1,52 @@
-import React,{useEffect} from 'react';
+import React,{useEffect, useState} from 'react';
 import './CorpoPage.css';
 import Perfil from '../perfil/perfil';
-import { setNome, setValor, setTotal,setGastos,deleteGasto } from '../../store/Reducers/Getvalues';
 import { useSelector, useDispatch } from "react-redux";
-import CurrencyInput from 'react-currency-input-field';
+import {useForm} from 'react-hook-form';
 
 
 
 function CorpoMain(props) {
- 
-  const { nome, valor,total} = useSelector(state => state.Value);
-  const gastos = useSelector(state=> state.Value.gastos);
+
+  const {register, handleSubmit, reset, formState: { isSubmitting } } = useForm();
+  const [gastos, setgastos] = useState([]);
+  const [total, settotal] =useState(0);
   
-  
+ console.log(gastos);
   const dispatch = useDispatch();
-  
 
-  const handleNomeChange = event => {
-    dispatch(setNome(event.target.value));
-  };
+  useEffect(() => {
+    const totalformatado = parseFloat(gastos.reduce(
+      (acc, gasto) => acc + gasto.valor, 0)).toLocaleString(
+        'pt-BR', { style: 'currency', currency: 'BRL' });
+    settotal(totalformatado);
+  }, [gastos]);
 
-  
-  const handleValorChange = value => {
-    dispatch(setValor(value));
+  const handlesubmit = data => {
 
-  };
-
-  const handleSubmit = event => {
-
-    event.preventDefault();
-
+    
+    const novoGasto = { nome: data.nome, valor: data.valor };
+    console.log(novoGasto);
     if (gastos.length >= 7) {
       alert("Você já criou o máximo de tabelas permitido.");
       return;
     }
 
     
-    dispatch(setGastos({ nometable :nome, valortable:valor }));
-    dispatch(setNome(''));
-    dispatch(setValor(''));
+
+    setgastos([...gastos, novoGasto]);
+    reset()
+
     
-    };
+    
+  };
 
     const handleDelete = (index) => {
-      dispatch(deleteGasto(index));
+      const newGastos = [...gastos];
+      newGastos.splice(index, 1);
+      setgastos(newGastos);
     };
-
-    
-    useEffect(() => {
-      const newTotal = gastos.reduce((total, gasto) => total + parseFloat(gasto.valortable), 0);
-      dispatch(setTotal(newTotal));
-    }, [gastos, dispatch]);
-
-    
+  
  
  
   return (
@@ -74,7 +68,7 @@ function CorpoMain(props) {
           <div className="col-md-3 ">
 
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(handlesubmit)}>
 
 
             <div className="container-fluid d-grid gap-2">
@@ -84,24 +78,21 @@ function CorpoMain(props) {
                 className="ajustedoform"
                 placeholder="Nome"
                 maxLength={12}
-                value={nome}
-                onChange={handleNomeChange}
-                required
+                {...register('nome',{required: true})}
+                               
               ></input>
               
             </div>
             
             <div className="container-fluid d-grid gap-2">
            
-            <CurrencyInput
+            <input
+                type='number'
                 className="ajustedoform"
                 placeholder="Valor"
-                decimalsLimit={2}
-                maxLength={8}
-                prefix="R$ "
-                value={valor}
-                onValueChange={handleValorChange}
-                required
+                step="0.01"          
+                {...register('valor', { required: true})}
+                                
               />
               
             </div>
@@ -109,7 +100,7 @@ function CorpoMain(props) {
 
             <div className="container-fluid d-grid gap-2">
 
-              <button type="submit" className="btn btn-secondary ">
+              <button type="submit" className="btn btn-secondary " disabled={isSubmitting}>
                 Submit
               </button>
             </div>
@@ -136,8 +127,8 @@ function CorpoMain(props) {
                         {gastos.map((gasto,index) => (
                         <tr key={index}>
 
-                        <td className='td-corpo'>{gasto.nometable}</td>
-                        <td className='td-corpo'>{gasto.valortable}</td>
+                        <td className='td-corpo'>{gasto.nome}</td>
+                        <td className='td-corpo'>{gasto.valor}</td>
 
                         <td>
                         <button className='btn btn-outline-danger btn-sm mybtn' id='mybtn' onClick={() => handleDelete(index)}>Delete</button>
@@ -151,7 +142,7 @@ function CorpoMain(props) {
                 </table>
                 
                 <div className='ValorTotal'><span className='spanvalor'>valor total</span>
-                <span className='spannumero'>{total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2  })}</span>
+                <span className='spannumero'>{total}</span>
                 
                 </div>
                 <div className='divdobutton'><button className='btn btn-success'>Salvar</button></div>

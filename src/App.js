@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Rotas from './rotas'
+import Rotas from './routes/rotas'
 
 
 const App = () => {

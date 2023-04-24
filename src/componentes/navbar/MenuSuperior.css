@@ -10,3 +10,14 @@
 
 }
 
+.logoutTopo{
+
+    margin-left: 85%;
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.logoutTopo:hover{
+    color: red;
+}
