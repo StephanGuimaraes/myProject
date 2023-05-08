@@ -49,13 +49,12 @@ const RegistroSlice = createSlice({
 
     },
 
-    setisSuccess(state,action){
+        setisSuccess(state,action){
 
           state.isSuccess = action.payload;
-        }
-  
-  
-  
+        },
+
+       
   },
 
     extraReducers: builder => {
@@ -72,8 +71,16 @@ const RegistroSlice = createSlice({
           .addCase(checkUser.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
+            if(action.payload.status === 422){
+
+              state.messageerro = action.payload.data.message;
+              
+
+            }else{
+
             state.messageerro = action.payload;
-                        
+
+            }       
           });
       }
 

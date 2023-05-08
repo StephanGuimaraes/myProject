@@ -3,16 +3,16 @@ import  ConexaoApi  from "../../services/registrosApi";
 
 
 
-
-
 const initialState =
 {
     profile:null,
     isLoading: false,
     isSuccess:false,
     error: false,
+    mensagem:null,
     }
 
+  
 
 export const CheckLogin = createAsyncThunk(
     'login/verificausuario',
@@ -36,7 +36,7 @@ const AuthSlice = createSlice({
        
         setMensagem(state,action){
           state.mensagem= action.payload;
-          console.log(action.payload)
+          
         },
 
         setProfile(state,action){
@@ -51,6 +51,7 @@ const AuthSlice = createSlice({
             state.isLoading = true;
           })
           .addCase(CheckLogin.fulfilled, (state, action) => {
+            
             state.isLoading = false;
             state.isSuccess = true;
             state.mensagem = action.payload.message;

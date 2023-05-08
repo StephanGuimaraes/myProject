@@ -3,6 +3,8 @@ import './CorpoPage.css';
 import Perfil from '../perfil/perfil';
 import { useSelector, useDispatch } from "react-redux";
 import {useForm} from 'react-hook-form';
+import {Setdadosuser,setmessage} from '../../store/Reducers/Setvalues';
+
 
 
 
@@ -11,22 +13,58 @@ function CorpoMain(props) {
   const {register, handleSubmit, reset, formState: { isSubmitting } } = useForm();
   const [gastos, setgastos] = useState([]);
   const [total, settotal] =useState(0);
+  const {idcliente} = useSelector(state=>state.Auth.profile[0])
+  const {message} = useSelector(state=>state.Value);
+
   
- console.log(gastos);
+  
+ 
   const dispatch = useDispatch();
 
+  
   useEffect(() => {
-    const totalformatado = parseFloat(gastos.reduce(
-      (acc, gasto) => acc + gasto.valor, 0)).toLocaleString(
-        'pt-BR', { style: 'currency', currency: 'BRL' });
+    const totalformatado = gastos.reduce(
+      (acc, gasto) => acc + parseFloat(gasto.valor), 0
+    ).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     settotal(totalformatado);
   }, [gastos]);
+  
+
+  useEffect(() => {
+    if (message === 'Gastos adicionados ao banco de dados!') {
+      alert('Gastos adicionados ao banco de dados!');
+      dispatch(setmessage(null));
+    }
+    if(message === 'Erro ao adicionar gastos ao banco de dados!'){
+      alert('Erro ao adicionar gastos ao banco de dados!');
+      dispatch(setmessage(null));
+    }
+  }, [message]);
+  
+  
+  function SendDadosToBd() {
+
+    const gastosComId = gastos.map(gasto => ({
+      ...gasto,
+      idcliente: idcliente
+    }));
+      
+      dispatch(Setdadosuser({gastos:gastosComId}));
+
+                 
+      setgastos([]);
+      settotal(0);
+
+       
+  }
 
   const handlesubmit = data => {
 
-    
-    const novoGasto = { nome: data.nome, valor: data.valor };
-    console.log(novoGasto);
+  const valorFormatado = parseFloat(data.valor).toFixed(2);
+  const novoGasto = { nome: data.nome, valor: valorFormatado };
+
+
+  
     if (gastos.length >= 7) {
       alert("Você já criou o máximo de tabelas permitido.");
       return;
@@ -35,6 +73,8 @@ function CorpoMain(props) {
     
 
     setgastos([...gastos, novoGasto]);
+
+    
     reset()
 
     
@@ -50,9 +90,10 @@ function CorpoMain(props) {
  
  
   return (
+    
 
       <div>
-      
+          
       
       <div className="Container-main">
         <div className="row" id='rowajuste'>
@@ -145,7 +186,7 @@ function CorpoMain(props) {
                 <span className='spannumero'>{total}</span>
                 
                 </div>
-                <div className='divdobutton'><button className='btn btn-success'>Salvar</button></div>
+                <div className='divdobutton'><button className='btn btn-success' onClick={SendDadosToBd}>Salvar</button></div>
 
               </div>
             </div>

@@ -1,7 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import AuthSlice from './Reducers/CheckLogin';
-import ValueSlice from './Reducers/Getvalues';
+import ValueSlice from './Reducers/Setvalues';
+import GetSlice from './Reducers/GetValuess';
 import RegistroSlice from './Reducers/registroReducer';
+import GetResumoSlice from './Reducers/GetResumoTotal';
+import GetResumodiarioSlice from './Reducers/Getresumodiario';
+import ImagemSlice from './Reducers/Setimg';
 import storage from 'redux-persist/lib/storage';
 import {persistReducer,
     FLUSH,
@@ -26,6 +30,10 @@ const reducer = combineReducers({
     Auth:AuthSlice,
     Value:ValueSlice,
     Registro:RegistroSlice,
+    GetGastos:GetSlice,
+    GetResumoTotal:GetResumoSlice,
+    Getresumodiario:GetResumodiarioSlice,
+    // Img:ImagemSlice,
 
 });
 

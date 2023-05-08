@@ -4,7 +4,7 @@ import './registro.css';
 import { useSelector, useDispatch } from "react-redux";
 import {checkUser,setisSuccess,setmessageerro} from '../../store/Reducers/registroReducer';
 import {useForm} from 'react-hook-form';
-
+import { useLocation } from 'react-router-dom';
 function Registro(){
 
   const {register, handleSubmit, reset} = useForm();
@@ -16,46 +16,39 @@ const [errorMessage, setErrorMessage] = useState('');
 const [erroemail, seterroemail] = useState('');
 const [mensagembol, setmensagembol] = useState(false);
 const [mensagemsucess, setmensagemsucess] = useState('');
-// dados de envio local
-const [password, setpassword] = useState('');
-const [confirmpassword, setconfirmpassword] = useState('');
 
-
+const location = useLocation();
 useEffect(() => {
   if (isSuccess) {
     setmensagembol(true);
     setmensagemsucess('CADASTRADO COM SUCESSO');
-    
-  }},[isSuccess])
 
- 
+    if(location.pathname === '/registro'){
+    setTimeout(() => {
+      window.location.reload();
+    }, 3000);
+  }
+  }},[isSuccess, location.pathname])
  
 
 
 function Enviarcadastro(data){
 
-  setpassword(data.password);
-  setconfirmpassword(data.confirmpassword);
-
-  
+   
   const username = data.username;
   const email = data.email;
   const password = data.password;
+  const confirmpassword = data.confirmpassword;
   const salario = data.salario;
   const nascimento = data.nascimento;
   
-  dispatch(checkUser({username,email,password,salario,nascimento}));
   
+  dispatch(checkUser({username,email,password,salario,nascimento,confirmpassword}));
  
 }
 
 
 function sendclick(){
-  if(password != confirmpassword){
-    
-    setErrorMessage("As senhas não são iguais. Tente novamente.")
-    return;
-  }
   
 
   setmensagembol(false);
@@ -130,7 +123,7 @@ function reseteregistro(){
 
             <div id ='Inputboxregister'>
 
-              <input type="password" {...register('password',{required:true})} onClick={()=>{setErrorMessage('')}}/>
+              <input type="password" {...register('password',{required:true})} onClick={cleanemail}/>
 
               <span>password</span>
 
@@ -146,7 +139,7 @@ function reseteregistro(){
 
             <div id ='Inputboxregister'>
 
-              <input type="password" {...register('confirmpassword',{required:true})} onClick={()=>{setErrorMessage('')}}/>
+              <input type="password" {...register('confirmpassword',{required:true})} onClick={cleanemail}/>
 
               <span>Confirm password</span>
 

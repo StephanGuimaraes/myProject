@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import './MenuSuperior.css';
 import { createBrowserHistory } from 'history';
-import { setProfile } from "../../store/Reducers/CheckLogin";
 import {useDispatch} from 'react-redux';
 
 

@@ -2,12 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './painellogin.css';
 import { useSelector, useDispatch } from "react-redux";
-import {setMensagem } from '../../store/Reducers/CheckLogin';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import {useEffect} from 'react';
 import {CheckLogin} from '../../store/Reducers/CheckLogin';
 import {useForm} from 'react-hook-form';
+import { setMensagem } from '../../store/Reducers/CheckLogin';
 
 
 
@@ -31,9 +31,10 @@ export default function Login() {
  
   function handleInputClick(action) {
     action.preventDefault();
-    dispatch(setMensagem(null));
+    
     setemailfail('');
     setemailbol(false);
+    dispatch(setMensagem(null));
   }
 
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export default function Login() {
   const dispatch = useDispatch();
 
   const { email, password, isLoading, error,isSuccess,mensagem } = useSelector(state => state.Auth);
-
+  console.log(mensagem)
   
   useEffect(() => {
     if (isSuccess) {
