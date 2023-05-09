@@ -5,9 +5,13 @@ import { useSelector, useDispatch } from "react-redux";
 import {checkUser,setisSuccess,setmessageerro} from '../../store/Reducers/registroReducer';
 import {useForm} from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
+import validator from "validator";
+
+
 function Registro(){
 
   const {register, handleSubmit, reset} = useForm();
+  
         
 const dispatch =useDispatch();
 
@@ -48,10 +52,11 @@ function Enviarcadastro(data){
 }
 
 
-function sendclick(){
+function sendclick(data){
   
+  
+    setmensagembol(false);
 
-  setmensagembol(false);
 }
 
 function cleanemail(){
@@ -148,6 +153,7 @@ function reseteregistro(){
             </div>
 
             <p className='msgerro'>{messageerro}</p>
+            
 
             </div>
             
