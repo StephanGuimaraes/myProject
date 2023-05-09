@@ -6,9 +6,6 @@ const cors = require('cors');
 const app = express();
 var path = require('path');
 const mysql = require('mysql2');
-const multer = require('multer');
-const jwt = require('jsonwebtoken');
-const secret = 'St86468540@';
 const crypto = require('crypto');
 const validator = require('validator');
 
@@ -28,10 +25,10 @@ class Usuario{
 
 
 const connection = mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'St86468540@',
-    database:'bd_stephan'
+  host:'localhost',
+  user:'root',
+  password:'123456789@',
+  database:'bd_stephan'
 
 });
 
@@ -39,7 +36,7 @@ connection.connect();
 
 const port = 5000;
 
-app.use(session({secret: 'St86468540@'}));
+app.use(session({secret: '123456789@'}));
 app.use(express.json());
 app.use(fileupload(
     
