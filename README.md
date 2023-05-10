@@ -58,6 +58,9 @@ colunas
 
 id nomeproduto valorproduto datahora id_usuario valor_total
 ...............................
+
+
+
 imagemusuario
 
 colunas 
@@ -65,6 +68,8 @@ colunas
 id imagem_usuario id_usuario
 
 ...............................
+
+
 
 usuario
 
