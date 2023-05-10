@@ -2,7 +2,7 @@
 
 react dependencias : 
 
-"dependencies": {
+"dependencies": 
     "@reduxjs/toolkit": "^1.9.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -38,7 +38,7 @@ react dependencias :
 node depedencias 
 
 
-"dependencies": {
+"dependencies":
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.0",
@@ -48,5 +48,28 @@ node depedencias
     "mysql": "^2.18.1",
     "mysql2": "^3.2.0",
     "validator": "^13.9.0"
+    
+    
+    tabela mysql 
+    
+    gastos
+
+colunas
+
+id nomeproduto valorproduto datahora id_usuario valor_total
+...............................
+imagemusuario
+
+colunas 
+
+id imagem_usuario id_usuario
+
+...............................
+
+usuario
+
+colunas
+
+idcliente nome password email salario nascimento
 
 
