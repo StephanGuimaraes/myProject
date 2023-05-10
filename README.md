@@ -50,13 +50,19 @@ node depedencias
     "validator": "^13.9.0"
     
     
-    tabela mysql 
+   
+   
+tabela mysql 
     
-    gastos
+  
+  
+  gastos
 
 colunas
 
-id nomeproduto valorproduto datahora id_usuario valor_total
+id, nomeproduto, valorproduto, datahora, id_usuario, valor_total
+
+
 ...............................
 
 
@@ -65,7 +71,7 @@ imagemusuario
 
 colunas 
 
-id imagem_usuario id_usuario
+id, imagem_usuario, id_usuario
 
 ...............................
 
@@ -75,6 +81,6 @@ usuario
 
 colunas
 
-idcliente nome password email salario nascimento
+idcliente, nome, password, email, salario, nascimento
 
 
